@@ -192,6 +192,13 @@ impl SBLaunchInfo {
         let path = CString::new(path).unwrap();
         unsafe { sys::SBLaunchInfoAddOpenFileAction(self.raw, fd, path.as_ptr(), read, write) }
     }
+    
+    #[allow(missing_docs)]
+    pub fn append_argument(&self, arg: &str) {
+        let arg: CString = CString::new(arg).unwrap();
+        let arg_ptr = (&arg.as_ptr()) as *const *const i8;
+        unsafe { sys::SBLaunchInfoSetArguments(self.raw, arg_ptr, true) }
+    }
 
     #[allow(missing_docs)]
     pub fn add_suppress_file_action(&self, fd: i32, read: bool, write: bool) -> bool {
